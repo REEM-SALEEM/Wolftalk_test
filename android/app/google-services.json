@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "918824101309",
+    "project_id": "wolfpackapp-7f5ca",
+    "storage_bucket": "wolfpackapp-7f5ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918824101309:android:3d26bebad19c0f29269ed4",
+        "android_client_info": {
+          "package_name": "com.example.wolf_pack_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZgkVs37qTaPxfgBtgdvzSacGqyvSomiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
