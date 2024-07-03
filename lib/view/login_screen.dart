@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
                           TextSpan(text: ' Signup', style: kMainTitleStyle)
                         ]),
                       ),
-                      kHeight15,
+                      kHeight60,
                       customText(text: 'Mobile Number'),
                       kHeigh5,
                       textFormField(
@@ -60,9 +60,10 @@ class LoginScreen extends StatelessWidget {
                           value.googleSignIn(context);
                         },
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: kWhite,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            side: const BorderSide(color: kBlack),
+                            side: BorderSide(color: Colors.grey[400]!),
                           ),
                         ),
                         child: Row(

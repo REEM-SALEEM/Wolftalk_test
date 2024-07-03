@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:wolf_pack_test/view/otp_screen.dart';
+import 'package:wolf_pack_test/services/database_services.dart';
 
 class AuthPhoneService {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   signInWithPhone(
     BuildContext context, {
     required String phoneNumber,
@@ -14,13 +13,9 @@ class AuthPhoneService {
         verificationCompleted: (phoneAuthCredential) {},
         verificationFailed: (error) {},
         codeSent: (verificationId, int? forceResendingToken) {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => OTPScreen(
-              verificationID: verificationId,
-            ),
-          ));
+          Navigator.of(context)
+              .pushNamed('/otp_screen', arguments: verificationId);
         },
-        //After otp expires
         codeAutoRetrievalTimeout: (verificationId) {},
         phoneNumber: phoneNumber);
   }
@@ -28,14 +23,24 @@ class AuthPhoneService {
   Future<UserCredential?> verifyOTP(BuildContext context,
       {required String? otp, required String? verificationID}) async {
     try {
-      PhoneAuthCredential credentials = PhoneAuthProvider.credential(
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationID!, smsCode: otp!);
 
-      return await FirebaseAuth.instance.signInWithCredential(credentials);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (userCredential.user != null &&
+          userCredential.additionalUserInfo!.isNewUser == true) {
+        await DatabaseService(uid: userCredential.user!.uid).savingUserData(
+          mobile: userCredential.user!.providerData.first.phoneNumber,
+        );
+      }
+      log('user --> ${userCredential.user!}');
+      return userCredential;
     } catch (e) {
-      debugPrint(e.toString());
-      return null;
+      log("failed to verify otp ${e.toString()}");
     }
+    return null;
   }
 
   void signOutPhone() async {

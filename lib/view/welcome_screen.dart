@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wolf_pack_test/constants/size/size.dart';
 import 'package:wolf_pack_test/constants/styles/textform_styles.dart';
 import 'package:wolf_pack_test/constants/widgets/elevatedbutton.dart';
 import 'package:wolf_pack_test/constants/widgets/textformfield_.dart';
-import 'package:wolf_pack_test/view/home_screen.dart';
+import 'package:wolf_pack_test/controller/welcome_prov.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -11,19 +12,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                    (route) => false);
-              },
-              child: const Text('SKIP'))
-        ],
-      ),
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -56,25 +45,34 @@ class WelcomeScreen extends StatelessWidget {
                       ],
                     ),
                   ))),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  customText(text: 'What should we call you?'),
-                  kHeigh5,
-                  textFormField(hintText: 'Type your name (Optional)'),
-                  kHeight25,
-                  elevatedButton(
-                    onPressed: () {},
-                    hintText: 'CONTINUE',
-                  )
-                ],
-              ),
-            ),
+          Consumer<WelcomeProv>(
+            builder: (context, value, child) {
+              return Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      customText(text: 'What should we call you?'),
+                      kHeigh5,
+                      textFormField(
+                          controller: value.nameController,
+                          hintText: 'Type your name (Optional)'),
+                      kHeight25,
+                      elevatedButton(
+                        onPressed: () {
+                          Provider.of<WelcomeProv>(context, listen: false)
+                              .updateName(context);
+                        },
+                        hintText: 'CONTINUE',
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
           )
         ],
       ),

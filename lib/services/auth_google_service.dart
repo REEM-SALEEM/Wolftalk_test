@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wolf_pack_test/services/database_services.dart';
 
 class AuthGoogleService {
   Future<UserCredential> signInWithGoogle() async {
@@ -12,7 +13,17 @@ class AuthGoogleService {
       idToken: gAuth.idToken,
     );
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    final userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    if (userCredential.user != null &&
+        userCredential.additionalUserInfo!.isNewUser == true) {
+      await DatabaseService(uid: userCredential.user!.uid).savingUserData(
+          email: userCredential.user!.providerData.first.email,
+          profilepic: userCredential.user!.providerData.first.photoURL);
+    }
+
+    return userCredential;
   }
 
   void signOutGoogle() async {

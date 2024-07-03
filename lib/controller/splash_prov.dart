@@ -1,29 +1,32 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:wolf_pack_test/controller/sharedprefs_prov.dart';
-import 'package:wolf_pack_test/view/home_screen.dart';
-import 'package:wolf_pack_test/view/login_screen.dart';
 
 class SplashProv extends ChangeNotifier {
+  SharedPrefsProv sharedPrefs = SharedPrefsProv();
   bool? isLoggedIn;
+  bool? isNamed;
   Future navigateTo(BuildContext context) async {
-    isLoggedIn = await Provider.of<SharedPrefsProv>(context, listen: false)
-        .getBool('isLoggedIn');
-    log('bool --> ${isLoggedIn.toString()}');
+    isLoggedIn = await sharedPrefs.getIsLoggedIn();
+    isNamed = await sharedPrefs.getIsNamed();
 
-    if (isLoggedIn == true) {
+    log('isLoggedIn --> ${isLoggedIn.toString()}');
+    log('isNamed --> ${isNamed.toString()}');
+
+    if (isLoggedIn == true && isNamed == true) {
       await Future.delayed(const Duration(seconds: 2)).then((value) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
-            (route) => false);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/home_screen", (route) => false);
+      });
+    } else if (isLoggedIn == true && isNamed == false) {
+      await Future.delayed(const Duration(seconds: 2)).then((value) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/welcome_screen", (route) => false);
       });
     } else {
       await Future.delayed(const Duration(seconds: 2)).then((value) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
-            (route) => false);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/login_screen", (route) => false);
       });
     }
   }

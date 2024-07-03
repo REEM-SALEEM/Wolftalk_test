@@ -10,7 +10,7 @@ Widget elevatedButton({
   return ElevatedButton(
     onPressed: onPressed,
     style: ElevatedButton.styleFrom(
-        backgroundColor: kGreen,
+        backgroundColor: kbuttonColor,
         minimumSize: Size(width ?? double.infinity, 50),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)))),

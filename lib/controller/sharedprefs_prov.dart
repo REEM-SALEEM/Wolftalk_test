@@ -2,35 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsProv extends ChangeNotifier {
-  Future<void> saveBool(String key, bool value) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(key, value);
-      notifyListeners();
-    } catch (e) {
-      debugPrint("Error saving bool to SharedPreferences: $e");
-    }
+  //---- STRING ----
+  // SET STRING
+  Future<void> saveUserName(String status) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    notifyListeners();
+    await sf.setString('sName', status);
   }
 
-  Future<bool> getBool(String key) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool? boolValue = prefs.getBool(key);
-      return boolValue ?? false;
-    } catch (e) {
-      debugPrint("Error retrieving bool from SharedPreferences: $e");
-      return false;
-    }
+  Future<void> saveUserEmail(String status) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    notifyListeners();
+    await sf.setString('sEmail', status);
   }
 
-  Future<void> saveString(String key, String value) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(key, value);
-      notifyListeners();
-    } catch (e) {
-      debugPrint("Error saving string to SharedPreferences: $e");
-    }
+  Future<void> saveUserMobile(String status) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    notifyListeners();
+    await sf.setString('sMobile', status);
+  }
+
+  Future<void> saveUserUid(String status) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    notifyListeners();
+    await sf.setString('sUid', status);
+  }
+
+// GET STRING
+  Future<String?> getUserName() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString('sName');
+  }
+
+  Future<String?> getUserEmail() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString('sEmail');
+  }
+
+  Future<String?> getUserMobile() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString('sMobile');
+  }
+
+  Future<String?> getUserUid() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString('sUid');
+  }
+  //---- BOOL ----
+  //---- SET BOOL
+
+  Future<void> saveIsLoggedIn(bool status) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    notifyListeners();
+    await sf.setBool('isLoggedIn', status);
+  }
+
+  Future<void> saveIsNamed(bool status) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    notifyListeners();
+    await sf.setBool('isNamed', status);
+  }
+
+  //---- GET BOOL
+  Future<bool?> getIsLoggedIn() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getBool('isLoggedIn');
+  }
+
+  Future<bool?> getIsNamed() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getBool('isNamed');
   }
 
   Future<void> clear() async {
@@ -40,16 +81,6 @@ class SharedPrefsProv extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint("Error saving string to SharedPreferences: $e");
-    }
-  }
-
-  Future<String?> getString(String key) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      return prefs.getString(key);
-    } catch (e) {
-      debugPrint("Error retrieving string from SharedPreferences: $e");
-      return null;
     }
   }
 }

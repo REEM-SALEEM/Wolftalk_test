@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wolf_pack_test/constants/color/colors.dart';
 import 'package:wolf_pack_test/controller/splash_prov.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -10,12 +12,11 @@ class SplashScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<SplashProv>(context, listen: false).navigateTo(context);
     });
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.deepOrange,
-        body: Column(
-          children: [],
-        ),
+        backgroundColor: kprimary,
+        body: Center(
+            child: Lottie.asset('assets/animations/splash_animation.json')),
       ),
     );
   }
